@@ -650,7 +650,6 @@
   </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="heading">
             <h1 class="logo">RizzLah</h1>
@@ -666,7 +665,6 @@
     <div class="container">
         <h1 class="intro">RizzLah! Singaporean AI that improves your game</h1>
         <p>Upload your chat screenshot lah, I help you reply in true Singaporean style!</p>
-
 
         <div class="preferences-form">
             <div class="form-group">
@@ -742,7 +740,6 @@
         navLinks.classList.toggle('active');
     });
 
-
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         uploadBox.addEventListener(eventName, preventDefaults, false);
         document.body.addEventListener(eventName, preventDefaults, false);
@@ -752,7 +749,6 @@
         e.preventDefault();
         e.stopPropagation();
     }
-
 
     ['dragenter', 'dragover'].forEach(eventName => {
         uploadBox.addEventListener(eventName, () => {
@@ -764,6 +760,7 @@
         uploadBox.addEventListener(eventName, () => {
             uploadBox.classList.remove('dragover');
         });
+    });
 
     uploadBox.addEventListener('drop', (e) => {
         const dt = e.dataTransfer;
@@ -862,8 +859,7 @@
           extractedTextDiv.textContent = `${data.generated_msg}`;
           extractedComments.textContent = `${data.comments}`;
           
-
-          const score = data.score || 0; /
+          const score = data.score || 0;
           updateProgress(score);
 
           generateBtn.textContent = "Done processing!";
@@ -881,7 +877,7 @@
 
     function updateProgress(score) {
       const progressCircle = document.querySelector('.progress-circle');
-      const percentage = Math.min(Math.max(score, 0), 100); // Ensure it's between 0 and 100
+      const percentage = Math.min(Math.max(score, 0), 100);
       percentageTextDiv.textContent = `${percentage}%`;
       
       progressCircle.style.background = `conic-gradient(var(--progress-color) ${percentage * 3.6}deg, #ededed 0deg)`;
@@ -935,10 +931,10 @@
 
     function updateProgress(score) {
       const progressCircle = document.querySelector('.progress-circle');
-      const percentage = Math.min(Math.max(score, 0), 100); 
+      const percentage = Math.min(Math.max(score, 0), 100); // Ensure it's between 0 and 100
       percentageTextDiv.textContent = `${percentage}%`;
       
-
+      // Update the progress circle background
       progressCircle.style.background = `conic-gradient(var(--progress-color) ${percentage * 3.6}deg, #ededed 0deg)`;
     }
 
