@@ -295,6 +295,13 @@
       width: 100%;
       box-shadow: var(--shadow-md);
       transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+
+    .upload-box.dragover {
+      background: rgba(124, 58, 237, 0.1);
+      border-color: var(--primary-dark);
+      transform: translateY(-4px);
     }
 
     .upload-box input[type="file"] {
@@ -643,7 +650,7 @@
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+
     <nav class="navbar">
         <div class="heading">
             <h1 class="logo">RizzLah</h1>
@@ -660,7 +667,7 @@
         <h1 class="intro">RizzLah! Singaporean AI that improves your game</h1>
         <p>Upload your chat screenshot lah, I help you reply in true Singaporean style!</p>
 
-        <!-- New preferences form -->
+
         <div class="preferences-form">
             <div class="form-group">
                 <label for="age">Your Age:</label>
@@ -719,9 +726,12 @@
     const status = document.getElementById('status');
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const uploadBox = document.querySelector('.upload-box');
+    const imageUpload = document.getElementById('imageUpload');
+    const preview = document.getElementById('preview');
+    
     extractedTextDiv.textContent = `Please wait till the image is loaded`;
 
-    // Add interest tag selection functionality
     document.querySelectorAll('.interest-tag').forEach(tag => {
         tag.addEventListener('click', () => {
             tag.classList.toggle('selected');
@@ -732,13 +742,78 @@
         navLinks.classList.toggle('active');
     });
 
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, () => {
+            uploadBox.classList.add('dragover');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, () => {
+            uploadBox.classList.remove('dragover');
+        });
+
+    uploadBox.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files.length) {
+            imageUpload.files = files;
+            handleFiles(files[0]);
+        }
+    });
+
+    imageUpload.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            handleFiles(e.target.files[0]);
+        }
+    });
+
+    function handleFiles(file) {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            
+            reader.onloadstart = () => {
+                preview.innerHTML = '<div style="color: var(--text-secondary);">Loading...</div>';
+            };
+            
+            reader.onload = (e) => {
+                preview.innerHTML = `
+                    <img src="${e.target.result}" 
+                         style="max-width: 100%; 
+                                max-height: 300px; 
+                                margin-top: 20px; 
+                                border-radius: var(--border-radius);
+                                box-shadow: var(--shadow-md);">`;
+            };
+            
+            reader.onerror = () => {
+                preview.innerHTML = '<div style="color: var(--primary);">Error loading image</div>';
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '<div style="color: var(--primary);">Please upload an image file</div>';
+        }
+    }
+
     generateBtn.addEventListener('click', async () => {
       const fileInput = document.getElementById('imageUpload');
       const age = document.getElementById('age');
       const gender = document.getElementById('gender');
       const selectedInterests = document.querySelectorAll('.interest-tag.selected');
 
-      // Check each field and focus on the first empty required field
       if (!age.value) {
         alert('Please enter your age');
         age.focus();
@@ -787,8 +862,8 @@
           extractedTextDiv.textContent = `${data.generated_msg}`;
           extractedComments.textContent = `${data.comments}`;
           
-          // Update the progress bar and percentage
-          const score = data.score || 0; // Default to 0 if no score
+
+          const score = data.score || 0; /
           updateProgress(score);
 
           generateBtn.textContent = "Done processing!";
@@ -804,6 +879,15 @@
       setTimeout(() => generateBtn.style.transform = 'translateY(-3px)', 150);
     });
 
+    function updateProgress(score) {
+      const progressCircle = document.querySelector('.progress-circle');
+      const percentage = Math.min(Math.max(score, 0), 100); // Ensure it's between 0 and 100
+      percentageTextDiv.textContent = `${percentage}%`;
+      
+      progressCircle.style.background = `conic-gradient(var(--progress-color) ${percentage * 3.6}deg, #ededed 0deg)`;
+    }
+
+    document.querySelectorAll('.intro').forEach((element) => {
     const uploadBox = document.querySelector('.upload-box');
     const imageUpload = document.getElementById('imageUpload');
     const preview = document.getElementById('preview');
@@ -851,10 +935,10 @@
 
     function updateProgress(score) {
       const progressCircle = document.querySelector('.progress-circle');
-      const percentage = Math.min(Math.max(score, 0), 100); // Ensure it's between 0 and 100
+      const percentage = Math.min(Math.max(score, 0), 100); 
       percentageTextDiv.textContent = `${percentage}%`;
       
-      // Update the progress circle background
+
       progressCircle.style.background = `conic-gradient(var(--progress-color) ${percentage * 3.6}deg, #ededed 0deg)`;
     }
 
@@ -865,6 +949,8 @@
             }
         });
     });
+  })
+  
   </script>
 </body>
 </html>
