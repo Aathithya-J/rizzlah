@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RizzLah</title>
+  <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+    --primary: #ff5e7b;
+    --primary-dark: #ff3c5f;
+    --primary-light:#f15a74;
+    --bg-gradient: linear-gradient(135deg, #F5F3FF 0%, #ffffff 100%);
+    --card-bg: #ffffff;
+    --text-primary: #0A0A0A;
+    --text-secondary: #6B7280;
+    --border-radius: 8px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --progress-color: #ff5e7b;
+    --big-trans: all 5.0s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem;
+      background: var(--glass-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2.5rem;
+      background: var(--glass-bg);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .heading{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap:0.75rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      padding-top:1rem;
+      transform: translateY(-2px);
+    }
+
+    .heading i {
+      font-size: 58px;
+      font-weight: 700;
+      display:flex;
+      align-items:center;
+      background: linear-gradient(265deg, #ffa500 10%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      text-decoration: none;
+      margin: 0;
+    }
+
+    .nav-item {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration:none;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+    }
+
+    .nav-item:hover::after {
+        width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.75rem;
+      color: var(--primary);
+      cursor: pointer;
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 1.25rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--glass-bg);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-md);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        transition: var(--transition);
+        backdrop-filter: blur(12px);
+      }
+
+      .nav-links.active {
+        display: flex;
+        animation: slideDown 0.3s ease-out forwards;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+
+    .intro {
+        display: inline-block;
+        cursor: pointer;
+        color: black;
+        background-image: linear-gradient(var(--primary), var(--primary));
+        background-repeat: no-repeat;
+        background-size: 180px 100%;
+        background-position: 0 0;
+        transition: background-position 0.5s, background-size 0.3s 0.5s;
+    }
+
+    .intro.hovered{
+        background-position: 100% 0%;
+        background-size: 100% 100%;
+        transition: background-position 0.3s, background-size 0.5s 0.3s;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 2rem;
+      text-align: center;
+      max-width: 700px;
+      line-height: 1.8;
+    }
+
+    .you {
+      display: flex;
+      font-size: 36px;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      justify-content: flex-end;
+      text-align: right;
+      width: 100%;
+      margin: 1.5rem 0;
+      letter-spacing: -0.5px;
+    }
+
+    .preferences-form {
+      width: 100%;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: var(--glass-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-group label::after {
+      content: " *";
+      color: var(--primary);
+    }
+
+    .form-group select,
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--primary);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      background: var(--glass-bg);
+    }
+
+    .interests-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .interest-tag {
+      padding: 0.5rem 1rem;
+      background: var(--primary-light);
+      color: white;
+      border-radius: var(--border-radius);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .interest-tag.selected {
+      background: var(--primary-dark);
+    }
+
+    .upload-box {
+      border: 3px dashed var(--primary);
+      border-radius: var(--border-radius);
+      padding: 4.5rem 2rem;
+      margin-bottom: 2.5rem;
+      background: rgba(124, 58, 237, 0.05);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .upload-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-box span {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 1.25rem;
+    }
+
+    .upload-box span::before {
+      content: '📸';
+      font-size: 1.75rem;
+    }
+
+    .generate-btn {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+      border: none;
+      padding: 1.25rem 2.5rem;
+      border-radius: var(--border-radius);
+      font-size: 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 2.5rem auto;
+      display: block;
+      min-width: 280px;
+      max-width: 100%;
+      box-shadow: var(--shadow-lg);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transform: translateY(-3px);
+    }
+
+    .generate-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .dashboard {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      margin-top: 3rem;
+      padding: 2.5rem;
+      background: var(--glass-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 100%;
+      box-shadow: var(--shadow-md);
+    }
+
+    .progress-circle {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      background: conic-gradient(var(--progress-color) 0deg, rgba(124, 58, 237, 0.1) 0deg);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: var(--big-trans);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .progress-circle::before {
+      content: "";
+      position: absolute;
+      height: 110px;
+      width: 110px;
+      border-radius: 50%;
+      background-color: var(--glass-bg);
+      box-shadow: inset var(--shadow-sm);
+    }
+
+    .progress-circle .percentage {
+      position: relative;
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-grow: 1;
+    }
+
+    .stat-item {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      flex: 1;
+      border-right: 2px solid rgba(124, 58, 237, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #result,
+    #extracted-text {
+      margin-top: 2rem;
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+      word-wrap: break-word;
+      border: none;
+      width: 100%;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(-3px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #result {
+      font-size: 1.375rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    #extracted-text {
+      font-size: 1.25rem;
+      color: #ffffff;
+      text-align: left;
+      white-space: pre-wrap;
+      line-height: 1.9;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    #extracted-text::before {
+      content: '';
+      position: absolute;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 15px solid var(--primary);
+      top: -15px;
+      right: 30px;
+      filter: drop-shadow(0 -2px 3px rgba(0, 0, 0, 0.1));
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .dashboard {
+        flex-direction: column;
+        gap: 2.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+
+      .stats {
+        width: 100%;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .stat-item {
+        border-right: none;
+        border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+        padding: 1.5rem 0;
+      }
+
+      .stat-item:last-child {
+        border-bottom: none;
+      }
+
+      h1 {
+        font-size: 2.25rem;
+      }
+
+      .generate-btn {
+        padding: 1.125rem 1.75rem;
+        font-size: 1.125rem;
+        width: 100%;
+        min-width: unset;
+      }
+
+      .you {
+        font-size: 32px;
+      }
+    }
+
+    .battle-container {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .player-card {
+      background: var(--glass-bg);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      width: 300px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .player-card h2 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.25rem;
+    }
+
+    .progress-bar-container {
+      background: rgba(124, 58, 237, 0.1);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin: 1.5rem 0;
+      height: 28px;
+      position: relative;
+      box-shadow: inset var(--shadow-sm);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .score {
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .action-buttons button {
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+      color: white;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .winner {
+      font-size: 2rem;
+      color: #10B981;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
+    }
+
+    #challengeInput {
+      width: 100%;
+      border-radius: var(--border-radius);
+      border: 2px solid var(--primary);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-family: inherit;
+      resize: vertical;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-md);
+      background: var(--glass-bg);
+      outline: none;
+    }
+
+    #challengeResult {
+      margin-top: 1.5rem;
+      padding: 1.75rem;
+      border-radius: var(--border-radius);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      display: none;
+      width: 100%;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+    <nav class="navbar">
+        <div class="heading">
+            <h1 class="logo">RizzLah</h1>
+            <i class="bx bxs-hot"></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="nav-item">Home</a></li>
+        </ul>
+        <button class="menu-toggle">
+            <i class="bx bx-menu"></i>
+        </button>
+    </nav>
+    <div class="container">
+        <h1 class="intro">RizzLah! Singaporean AI that improves your game</h1>
+        <p>Upload your chat screenshot lah, I help you reply in true Singaporean style!</p>
+
+        <!-- New preferences form -->
+        <div class="preferences-form">
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" min="18" max="100" placeholder="Enter your age" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender whom you are talking to:</label>
+                <select id="gender" required>
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Your Interests (Select multiple):</label>
+                <div class="interests-container">
+                    <div class="interest-tag">Sports</div>
+                    <div class="interest-tag">Music</div>
+                    <div class="interest-tag">Travel</div>
+                    <div class="interest-tag">Food</div>
+                    <div class="interest-tag">Movies</div>
+                    <div class="interest-tag">Gaming</div>
+                    <div class="interest-tag">Art</div>
+                    <div class="interest-tag">Technology</div>
+                </div>
+            </div>
+        </div>
+
+        <label class="upload-box">
+        <input type="file" accept="image/*" id="imageUpload" required>
+        <span>Drag your screenshot to upload...</span>
+        <div id="preview"></div>
+        </label>
+        <div class="you">Your reply</div>
+        <div id="extracted-text"></div>
+        <button class="generate-btn" id="generateBtn" type="button">Generate Shiok Reply ✨</button>
+        <div class="dashboard">
+        <div>
+            <div class="progress-circle">
+            <span class="percentage"></span>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat-item">Comments<span id="stat-value"></span></div>
+        </div>
+    </div>
+  <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const extractedTextDiv = document.getElementById('extracted-text');
+    const extractedComments = document.getElementById('stat-value');
+    const percentageTextDiv = document.querySelector('.progress-circle .percentage');
+    const status = document.getElementById('status');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    extractedTextDiv.textContent = `Please wait till the image is loaded`;
+
+    // Add interest tag selection functionality
+    document.querySelectorAll('.interest-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            tag.classList.toggle('selected');
+        });
+    });
+
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    generateBtn.addEventListener('click', async () => {
+      const fileInput = document.getElementById('imageUpload');
+      const age = document.getElementById('age');
+      const gender = document.getElementById('gender');
+      const selectedInterests = document.querySelectorAll('.interest-tag.selected');
+
+      // Check each field and focus on the first empty required field
+      if (!age.value) {
+        alert('Please enter your age');
+        age.focus();
+        return;
+      }
+
+      if (!gender.value) {
+        alert('Please select your gender');
+        gender.focus();
+        return;
+      }
+
+      if (selectedInterests.length === 0) {
+        alert('Please select at least one interest');
+        document.querySelector('.interests-container').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      if (fileInput.files.length === 0) {
+        alert('Please select an image to upload');
+        fileInput.focus();
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("age", age.value);
+      formData.append("gender", gender.value);
+      formData.append("interests", JSON.stringify(Array.from(selectedInterests).map(tag => tag.textContent)));
+
+      generateBtn.textContent = "Processing image...";
+
+      try {
+        const response = await fetch("https://sairams-macbook-air.tail4ef781.ts.net/api/upload", {
+          method: "POST",
+          body: formData,
+          headers: {
+            'Origin': window.location.origin,
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          extractedTextDiv.textContent = `${data.generated_msg}`;
+          extractedComments.textContent = `${data.comments}`;
+          
+          // Update the progress bar and percentage
+          const score = data.score || 0; // Default to 0 if no score
+          updateProgress(score);
+
+          generateBtn.textContent = "Done processing!";
+        } else {
+          generateBtn.textContent = `Upload failed. Status: ${response.status}`;
+        }
+      } catch (error) {
+        status.textContent = `Error: ${error.message}`;
+        console.error("Upload error:", error.message);
+      }
+
+      generateBtn.style.transform = 'scale(0.95)';
+      setTimeout(() => generateBtn.style.transform = 'translateY(-3px)', 150);
+    });
+
+    const uploadBox = document.querySelector('.upload-box');
+    const imageUpload = document.getElementById('imageUpload');
+    const preview = document.getElementById('preview');
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      uploadBox.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadBox.addEventListener(eventName, () => {
+        uploadBox.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadBox.addEventListener(eventName, () => {
+        uploadBox.classList.remove('dragover');
+      });
+    });
+
+    uploadBox.addEventListener('drop', handleDrop);
+    imageUpload.addEventListener('change', handleFiles);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      handleFiles({target: {files}});
+    }
+
+    function handleFiles(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; margin-top: 20px; border-radius: 10px;">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function updateProgress(score) {
+      const progressCircle = document.querySelector('.progress-circle');
+      const percentage = Math.min(Math.max(score, 0), 100); // Ensure it's between 0 and 100
+      percentageTextDiv.textContent = `${percentage}%`;
+      
+      // Update the progress circle background
+      progressCircle.style.background = `conic-gradient(var(--progress-color) ${percentage * 3.6}deg, #ededed 0deg)`;
+    }
+
+    document.querySelectorAll('.intro').forEach((element) => {
+        element.addEventListener('mouseenter', function () {
+            if (!this.classList.contains('hovered')) {
+                this.classList.add('hovered');
+            }
+        });
+    });
+  </script>
+</body>
+</html>
